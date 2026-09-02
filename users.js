@@ -489,6 +489,7 @@ render();
 /* ---------- Profile card ---------- */
 
 const profileCard = document.getElementById("profileCard");
+const profileModal = document.getElementById("profileModal");
 
 const ACTION_ICONS = {
   "To company": '<path d="M20 11.5a8 8 0 1 1-2.4-5.7"/><path d="M20 4v4h-4"/>',
@@ -583,7 +584,7 @@ function renderProfile(user) {
     <div class="profile-bar">
       <button class="ghost-btn back-btn" id="backToList">
         ${svg('<path d="m14 6-6 6 6 6"/>', 14, 2.2)}
-        <span>Back to list</span>
+        <span>Close</span>
       </button>
       <div class="profile-actions">${actions}</div>
     </div>
@@ -650,12 +651,28 @@ function openProfile(email) {
   if (!user) return;
 
   renderProfile(user);
-  showView("profile", { navView: "users", crumbs: ["Administrator", "Users", user.name] });
+  profileModal.hidden = false;
+  document.body.classList.add("modal-open");
+  requestAnimationFrame(() => requestAnimationFrame(() => profileModal.classList.add("is-open")));
+}
+
+function closeProfile() {
+  if (profileModal.hidden) return;
+  profileModal.classList.remove("is-open");
+  document.body.classList.remove("modal-open");
+
+  const drawer = profileModal.querySelector(".profile-drawer");
+  const onEnd = (e) => {
+    if (e.target !== drawer || e.propertyName !== "transform") return;
+    drawer.removeEventListener("transitionend", onEnd);
+    profileModal.hidden = true;
+  };
+  drawer.addEventListener("transitionend", onEnd);
 }
 
 profileCard.addEventListener("click", (e) => {
   if (e.target.closest("#backToList")) {
-    showView("users");
+    closeProfile();
     return;
   }
 
@@ -668,4 +685,10 @@ profileCard.addEventListener("click", (e) => {
   const isSummary = tab.dataset.tab === "Summary";
   profileCard.querySelector(".profile-panel").hidden = !isSummary;
   profileCard.querySelector(".profile-placeholder").hidden = isSummary;
+});
+
+document.querySelector("[data-close-profile]").addEventListener("click", closeProfile);
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !profileModal.hidden) closeProfile();
 });

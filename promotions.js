@@ -91,12 +91,22 @@ function openPromotion(item = null) {
   }
   promotionModal.hidden = false;
   document.body.classList.add("modal-open");
+  requestAnimationFrame(() => requestAnimationFrame(() => promotionModal.classList.add("is-open")));
   setTimeout(() => promotionForm.elements.title.focus(), 40);
 }
 
 function closePromotion() {
-  promotionModal.hidden = true;
+  if (promotionModal.hidden) return;
+  promotionModal.classList.remove("is-open");
   document.body.classList.remove("modal-open");
+
+  const drawer = promotionModal.querySelector(".promotion-drawer");
+  const onEnd = (e) => {
+    if (e.target !== drawer || e.propertyName !== "transform") return;
+    drawer.removeEventListener("transitionend", onEnd);
+    promotionModal.hidden = true;
+  };
+  drawer.addEventListener("transitionend", onEnd);
 }
 
 promotionsTable.addEventListener("click", (event) => {
