@@ -12,7 +12,7 @@
   --muted-2: #a9a5b5;
   --accent: #6c4df6;
   --accent-soft: #f1ecfe;
-  --chip: #f5f3f9;
+  --chip: #f2f3f5;
   --check-border: #d6d1e0;
   --radius-panel: 18px;
   --shadow-panel: 0 18px 50px -22px rgba(48, 32, 84, .28);
@@ -33,7 +33,7 @@ html[data-theme="dark"] {
   --muted-2: #7d7890;
   --accent: #8a70ff;
   --accent-soft: #2a2340;
-  --chip: #262233;
+  --chip: #232329;
   --check-border: #3d3752;
   --shadow-panel: 0 18px 50px -22px rgba(0, 0, 0, .7);
   --shadow-card: 0 6px 20px -12px rgba(0, 0, 0, .55);
@@ -319,12 +319,16 @@ body {
 .crumb-add {
   display: grid;
   place-items: center;
+  flex: none;
   width: 22px;
   height: 22px;
+  padding: 0;
+  margin: 0;
   border: 1px solid var(--line);
   border-radius: 50%;
   background: var(--surface);
   color: var(--ink-2);
+  line-height: 0;
   cursor: pointer;
 }
 
@@ -368,7 +372,7 @@ body {
 .panel-body {
   flex: 1;
   min-height: 0;
-  padding: 22px 22px 26px;
+  padding: 20px 22px;
   overflow: auto;
 }
 
@@ -749,7 +753,6 @@ input[type="checkbox"]:checked {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  max-width: 1100px;
   margin-bottom: 14px;
   padding: 16px;
   border: 1px solid var(--line);
@@ -1303,6 +1306,42 @@ table.promotions-table { min-width: 840px; }
   white-space: nowrap;
 }
 
+/* ---------- Notifications ---------- */
+
+table.notifications-table { min-width: 900px; }
+
+.push-check {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  color: #1f8f4e;
+}
+
+.message-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 420px;
+}
+
+.message-cell strong {
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.message-cell span {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 11.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .promotion-modal[hidden] { display: none !important; }
 
 .promotion-modal {
@@ -1538,6 +1577,46 @@ html[data-theme="dark"] .form-field select {
   border-color: var(--accent);
   background: var(--accent);
   color: #fff;
+}
+
+.content-type-tabs {
+  display: inline-flex;
+  gap: 4px;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--chip);
+}
+
+.content-type-tab {
+  padding: 7px 14px;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.content-type-tab:hover { color: var(--ink-2); }
+
+.content-type-tab.is-active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.textarea-counter { position: relative; }
+
+.textarea-counter textarea { resize: vertical; padding-bottom: 22px; }
+
+.textarea-count {
+  position: absolute;
+  right: 12px;
+  bottom: 8px;
+  color: var(--muted-2);
+  font-size: 10.5px;
+  pointer-events: none;
 }
 
 .upload-card {

@@ -202,6 +202,7 @@ const CRUMBS = {
   tasks: ["Administrator", "Tasks"],
   users: ["Administrator", "Users"],
   promotions: ["Administrator", "Promotions"],
+  notifications: ["Administrator", "Notifications"],
 };
 
 const crumbs = document.getElementById("crumbs");
@@ -219,10 +220,14 @@ const CRUMB_ACTIONS = {
   promotions: `<button class="crumb-add" id="createPromotion" title="Create promotion" aria-label="Create promotion">
     <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5.5v13M5.5 12h13"/></svg>
   </button>`,
+  notifications: `<button class="crumb-add" id="createNotification" title="Create notification" aria-label="Create notification">
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5.5v13M5.5 12h13"/></svg>
+  </button>`,
 };
 
 crumbs.addEventListener("click", (e) => {
   if (e.target.closest("#createPromotion")) window.openPromotion?.();
+  if (e.target.closest("#createNotification")) window.openNotification?.();
 });
 
 function showView(name, options = {}) {

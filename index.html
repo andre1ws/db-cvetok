@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=8" />
+<link rel="stylesheet" href="styles.css?v=15" />
 </head>
 <body>
 <div class="app">
@@ -36,6 +36,9 @@
           </a>
           <a class="nav-item nav-sub" href="#" data-view="promotions">
             <span>Promotions</span>
+          </a>
+          <a class="nav-item nav-sub" href="#" data-view="notifications">
+            <span>Notifications</span>
           </a>
           <a class="nav-item nav-sub" href="#" data-view="tasks">
             <span>Tasks</span>
@@ -248,6 +251,27 @@
         <p class="empty-note" id="promotionsEmpty" hidden>No promotions match your search.</p>
       </section>
 
+      <section class="view" data-view="notifications" hidden>
+        <div class="toolbar toolbar-plain">
+          <div class="toolbar-left">
+            <label class="search search-wide">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
+              <input id="notificationSearch" type="search" placeholder="Username or email" />
+            </label>
+            <button class="icon-btn is-bordered" title="Filter" aria-label="Filter notifications">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5h16M7 12h10M10 17.5h4"/></svg>
+            </button>
+          </div>
+          <button class="ghost-btn archive-btn">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="13" rx="2"/><path d="M3 4h18v4H3zM9 12h6"/></svg>
+            <span>Archive</span>
+          </button>
+        </div>
+
+        <div class="data-table-wrap" id="notificationsTable"></div>
+        <p class="empty-note" id="notificationsEmpty" hidden>No notifications match your search.</p>
+      </section>
+
     </div>
   </main>
 </div>
@@ -417,8 +441,128 @@
   </aside>
 </div>
 
-<script src="app.js?v=8"></script>
-<script src="users.js?v=8"></script>
-<script src="promotions.js?v=8"></script>
+<div class="promotion-modal" id="notificationModal" hidden>
+  <button class="promotion-backdrop" type="button" aria-label="Close notification editor" data-close-notification></button>
+  <aside class="promotion-drawer" role="dialog" aria-modal="true" aria-labelledby="notificationModalTitle">
+    <header class="drawer-head">
+      <h2 id="notificationModalTitle">Create a notification or article</h2>
+      <button class="icon-btn drawer-close" type="button" aria-label="Close" data-close-notification>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </header>
+
+    <form class="promotion-form" id="notificationForm">
+      <div class="drawer-scroll">
+        <section class="form-block">
+          <h3 class="form-block-title">Add segment by users</h3>
+          <div class="field-with-action">
+            <input name="segmentUsers" class="field-control" placeholder="Usernames or email addresses" />
+            <button class="icon-btn is-bordered" type="button" title="Import segment" aria-label="Import segment">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3.5H7.5A2 2 0 0 0 5.5 5.5v13a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V8.5L14 3.5Z"/><path d="M13.8 3.6v5h4.6"/><path d="M12 11.5v5M9.8 14.3 12 16.5l2.2-2.2"/></svg>
+            </button>
+          </div>
+        </section>
+
+        <section class="form-block">
+          <h3 class="form-block-title">Add segment label and CSP</h3>
+          <label class="form-field">
+            <span>Label</span>
+            <select name="label" class="field-control">
+              <option value="">Select labels</option>
+              <option>Users</option>
+              <option>CSP</option>
+            </select>
+          </label>
+          <label class="form-field">
+            <span>CSP</span>
+            <select name="csp" class="field-control">
+              <option value="">Select a CSP</option>
+              <option>Garna</option>
+            </select>
+          </label>
+          <label class="form-field">
+            <span>Exclude CSP</span>
+            <select name="excludeCsp" class="field-control">
+              <option value="">Select a CSP</option>
+              <option>Garna</option>
+            </select>
+          </label>
+        </section>
+
+        <section class="form-block">
+          <h3 class="form-block-title">Narrow segment by country</h3>
+          <div class="field-with-action">
+            <input name="countries" class="field-control" placeholder="Users from selected countries in the segment will see the content" />
+            <button class="icon-btn is-bordered" type="button" title="Import countries" aria-label="Import countries">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3.5H7.5A2 2 0 0 0 5.5 5.5v13a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V8.5L14 3.5Z"/><path d="M13.8 3.6v5h4.6"/><path d="M12 11.5v5M9.8 14.3 12 16.5l2.2-2.2"/></svg>
+            </button>
+          </div>
+        </section>
+
+        <section class="form-block">
+          <div class="language-tabs" role="tablist">
+            <button type="button" class="language-tab is-active">EN</button>
+            <button type="button" class="language-tab">RU</button>
+            <button type="button" class="language-tab">ES</button>
+            <button type="button" class="language-tab">PT</button>
+            <button type="button" class="language-tab">TH</button>
+            <button type="button" class="language-tab">AR</button>
+            <button type="button" class="language-tab">VI</button>
+          </div>
+
+          <div class="content-type-tabs" role="tablist">
+            <button type="button" class="content-type-tab is-active" data-content-type="notification">Notification</button>
+            <button type="button" class="content-type-tab" data-content-type="push">Push</button>
+          </div>
+
+          <label class="form-field">
+            <span>Notification title</span>
+            <div class="textarea-counter">
+              <textarea name="title" class="field-control" rows="2" maxlength="100" placeholder="Recommended length is up to 70 characters"></textarea>
+              <span class="textarea-count">0/100</span>
+            </div>
+          </label>
+          <p class="form-hint">Variables – {user_name}, {credits_amount}, {funds_amount}, {balance_amount}</p>
+
+          <label class="form-field">
+            <span>Notification text</span>
+            <div class="textarea-counter">
+              <textarea name="text" class="field-control" rows="4" maxlength="500" placeholder="Recommended length is up to 200 characters"></textarea>
+              <span class="textarea-count">0/500</span>
+            </div>
+          </label>
+          <p class="form-hint">Variables – {user_name}, {credits_amount}, {funds_amount}, {balance_amount}</p>
+
+          <label class="switch-row">
+            <input name="articleFormat" type="checkbox" />
+            <span class="switch-control"></span>
+            <span>Article format</span>
+          </label>
+          <label class="switch-row">
+            <input name="addButton" type="checkbox" />
+            <span class="switch-control"></span>
+            <span>Add a button</span>
+          </label>
+          <label class="switch-row">
+            <input name="important" type="checkbox" />
+            <span class="switch-control"></span>
+            <span>Mark notification as important</span>
+          </label>
+        </section>
+      </div>
+
+      <footer class="drawer-footer">
+        <button class="primary-btn" type="submit" id="notificationSubmit">Create</button>
+        <button class="ghost-btn" type="button" disabled>Preview</button>
+        <button class="ghost-btn" type="button" disabled>Save draft</button>
+      </footer>
+    </form>
+  </aside>
+</div>
+
+<script src="app.js?v=15"></script>
+<script src="users.js?v=15"></script>
+<script src="promotions.js?v=15"></script>
+<script src="notifications.js?v=15"></script>
 </body>
 </html>
