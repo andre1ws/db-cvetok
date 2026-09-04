@@ -1000,6 +1000,37 @@ table.users-table { min-width: 820px; }
 
 .kyc-badge.is-pending { background: #fdf3d7; color: #a07806; }
 
+/* ---------- Transactions ---------- */
+
+.status-pill {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.status-pill.is-new { background: #fdf3d7; color: #a07806; }
+.status-pill.is-confirmed { background: #dff6e5; color: #1f8f4e; }
+
+.method-link { color: #1f8f4e; font-weight: 500; }
+.method-plain { color: var(--ink-2); }
+
+table.transactions-table { min-width: 1020px; }
+
+table.transactions-table tfoot td {
+  padding: 12px 10px;
+  border-top: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+table.transactions-table tfoot td:first-child { padding-left: 14px; }
+table.transactions-table tfoot td:last-child { padding-right: 14px; }
+
 .last-action {
   display: inline-flex;
   align-items: center;

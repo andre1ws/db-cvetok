@@ -203,6 +203,7 @@ const CRUMBS = {
   users: ["Administrator", "Users"],
   promotions: ["Administrator", "Promotions"],
   notifications: ["Administrator", "Notifications"],
+  transactions: ["Payments", "Transactions"],
 };
 
 const crumbs = document.getElementById("crumbs");
